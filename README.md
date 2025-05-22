@@ -56,3 +56,21 @@ seo-analyze -h
 ```
 
 ---
+
+## 📤 Output
+
+- JSON report(s) in a folder (default: `seo_reports/`)
+- Combined CSV summary (default: `seo_summary.csv`)
+- Logs for any failed URLs in `seo_errors.log`
+
+---
+
+## 🛡 License
+[MIT][LICENSE]
+
+---
+
+## 📫 Author
+
+Created by Mario Semper
+📧 mario.semper@masem.at
