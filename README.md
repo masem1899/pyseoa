@@ -12,3 +12,47 @@
 - Robots.txt, sitemap.xml, favicon check
 - Accessibility (A11Y) hints
 - Structured Data (JSON-LD)
+- Lighthouse score via PageSpeedAPI (optional)
+- Mobile-friendly detection
+- Keyword density analysis
+- Export results to JSON, CSV, or HTML
+- Parallel processing with progress bar
+- API and CLI ready
+
+---
+
+## 📦 Installation
+
+```bash
+pip install pyseoa
+```
+
+Or form source:
+```bash
+git clone https://github.com/sempre76/pyseoa.git
+cd pyseoa
+pip install -e
+```
+
+---
+
+## 🧪 Usage
+
+### Analyze a single URL
+```
+seo-analyze https://example.com
+```
+
+### Analyze multiple files from a file
+
+```bash
+seo-analyze -f urls.txt
+```
+
+### Full CLI Options
+
+```bash
+seo-analyze -h
+```
+
+---
