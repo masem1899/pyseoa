@@ -5,3 +5,10 @@
 ---
 
 ## 🚀 Features
+
+- Analyze single or batch URLs
+- Title, meta description, headers, alt tags
+- Canonical links, Open Graph, Twitter tags
+- Robots.txt, sitemap.xml, favicon check
+- Accessibility (A11Y) hints
+- Structured Data (JSON-LD)
