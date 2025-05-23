@@ -74,3 +74,8 @@ seo-analyze -h
 
 Created by Mario Semper
 📧 mario.semper@masem.at
+
+## 🔗 Links
+[![PyPI version](https://img.shields.io/pypi/v/pyseoa-cli.svg)](https://pypi.org/project/pyseoa-cli/)
+[![Python versions](https://img.shields.io/pypi/pyversions/pyseoa-cli.svg)](https://pypi.org/project/pyseoa-cli/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
