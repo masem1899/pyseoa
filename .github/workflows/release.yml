@@ -1,0 +1,33 @@
+name: 📦 PyPI Release
+on:
+  push:
+    tags: 
+      - "v*.*.*"
+
+jobs:
+  build-and-publish:
+    name: Build and publish to PyPi
+    runs-on: ubtunu-latest
+
+    steps:
+      - name: 🧾 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: 📦 Install Build Tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+
+      - name: 🔨 Build package
+        run: python -m build
+
+      - name: Publish to PyPi
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{secrets.PYPI_API_TOKEN}}
+        run: twine update dist/*
