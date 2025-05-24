@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
-from typing import Optional, Dict, List
+from typing import Optional, Dict, List, Union
 from urllib.parse import urlparse
 
 
@@ -47,6 +47,64 @@ logging.basicConfig(
     format="$(asctime)s - %(levelname)s - %(message)s"
 )
 
+
+_user_disallowed_keywords: List[str] = []
+_user_allowed_keywords: List[str] = []
+_disallowed_keywords: List[str] = [
+    # common
+    'name',
+    # en
+    'and','are','eight','five','for','four','her','its','his','link','may','nine','not','one','our','seven','six','ten','the',
+    'these','their','they','this','three','two','use','were','you','your',
+    # de
+    'aber','acht','das','der','die','drei','ein','eine','eins','einer','fünf','ich','ihr','neun','sechs','sie','sieben','view','wir','zehn','zu','zum','zur','zwei',
+]
+
+
+
+
+def disallow_keyword(keyword: Union[str, List[str]]) -> None:
+    """
+    Adds one ore more user defined keyword(s), that should be not allowed for keyword density analysis.
+    e.g. disallow_keywords(['at','there',...])
+    """
+    def _disallow(kw: str) -> None:
+        if not kw in _user_disallowed_keywords:
+            _user_disallowed_keywords.append(kw)
+    
+    if isinstance(keyword, list):
+        for v in keyword:
+            _disallow(v)
+    else:
+        _disallow(keyword)
+
+
+
+def allow_keyword(keyword: Union[str, List[str]]) -> None:
+    """
+    Adds on or more user defined keyword(s), that should be allowed for keyword density analysis.
+    Normally all keywords are allowed except the default disallowed list. If you want to also allow
+    a word of this list, use this function.
+    You get an overview of the words that are denied for keyword density analysis with the function:
+    get_disallowed_keywords()
+    """
+    def _allow(kw: str) -> None:
+        if not kw in _user_allowed_keywords:
+            _user_allowed_keywords.append(kw)
+    
+    if isinstance(keyword, list):
+        for v in keyword:
+            _allow(v)
+    else:
+        _allow(keyword)
+
+
+def get_disallowed_keywords(include_user_defined: bool = False) -> List[str]:
+    if include_user_defined:
+        all_disallowed = _disallowed_keywords + _user_disallowed_keywords
+        return [i for i in all_disallowed if i not in _user_allowed_keywords]
+    else:
+        return _disallowed_keywords
 
 
 class SEOAnalyzer:
@@ -332,6 +390,15 @@ class SEOAnalyzer:
             return self
         
         words_count = Counter(words)
+        # remove disallowed words
+        _disallowed = _user_disallowed_keywords + _disallowed_keywords
+        _disallowed = [i for i in _disallowed if i not in _user_allowed_keywords]
+
+        if _disallowed:
+            for word in list(words_count):
+                if word in _disallowed:
+                    del words_count[word]
+
         most_common = words_count.most_common(top_n)
         density = [
             {'word':word, 'count':count, 'percent':round((count / total_words) * 100, 2)}
@@ -662,11 +729,3 @@ class BatchSEOAnalyzer:
 
 
 
-if __name__ == '__main__':
-    urls:List[str] = [
-        'https://www.usvkautzen.at','https://pysty.dev/', 'https://nhl.com', 'https://www.hartlauer.at'
-    ]
-    batch = BatchSEOAnalyzer(urls, exclude=FLAG_WEBVITALS)
-    batch.run_batch_analysis()
-    batch.export_all_to_json('json')
-    batch.export_combined_csv('reports.csv')

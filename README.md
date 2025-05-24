@@ -14,8 +14,9 @@
 - Structured Data (JSON-LD)
 - Lighthouse score via PageSpeedAPI (optional)
 - Mobile-friendly detection
-- Keyword density analysis
+- Keyword density analysis (filter out of words possible)
 - Export results to JSON, CSV, or HTML
+- Export results to terminal
 - Parallel processing with progress bar
 - API and CLI ready
 
