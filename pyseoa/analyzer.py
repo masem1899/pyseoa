@@ -11,10 +11,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
 from typing import Optional, Dict, List, Union
 from urllib.parse import urlparse
+from exports.html_exporter import HTMLExporter
 
-
-
-
+# Flags for inlcuding/excluding analytic features
 FLAG_NONE               :int = 0
 FLAG_TITLE              :int = 1
 FLAG_META_DESCRIPTION   :int = 2
@@ -39,7 +38,6 @@ FLAG_AMP_COMPLIANCE     :int = 524288
 FLAG_ALL                :int = 1048575
 
 
-
 logging.basicConfig(
     filename='seo_errors.log',
     filemode='w',
@@ -48,6 +46,8 @@ logging.basicConfig(
 )
 
 
+# support for allowing and disallowing keywords for keyword density feature.
+# The analyzers take this in account.
 _user_disallowed_keywords: List[str] = []
 _user_allowed_keywords: List[str] = []
 _disallowed_keywords: List[str] = [
@@ -100,11 +100,21 @@ def allow_keyword(keyword: Union[str, List[str]]) -> None:
 
 
 def get_disallowed_keywords(include_user_defined: bool = False) -> List[str]:
+    """
+    Collects all disallowed keywords (optional with user defined).
+
+    Args:
+        include_user_defined (bool): Whether user defined allow/disallow should be considered.
+
+    Returns:
+        A list of disallowed keywords.
+    """
     if include_user_defined:
         all_disallowed = _disallowed_keywords + _user_disallowed_keywords
         return [i for i in all_disallowed if i not in _user_allowed_keywords]
     else:
         return _disallowed_keywords
+
 
 
 class SEOAnalyzer:
@@ -656,6 +666,7 @@ class BatchSEOAnalyzer:
         Args:
             urls (List[str]): A list of website URLs to analyze.
         """
+        self.original_urls = urls
         self.urls = urls
         self.google_api_key = google_api_key
         self.include = include or FLAG_ALL
@@ -666,7 +677,6 @@ class BatchSEOAnalyzer:
         """
         Runs SEO analysis for all URLs and stores results.
         """
-        print(f"Analyzing {len(self.urls)} URLs with {max_workers} workers ...")
 
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             future_to_url = {
@@ -681,7 +691,6 @@ class BatchSEOAnalyzer:
                 except Exception as e:
                     logging.warning(f"Failed to analyze {url}: {e}")
             for url in self.urls:
-                print(f"Analyzing: {url}")
                 analyzer = SEOAnalyzer(url, self.google_api_key)
                 result = analyzer.run_analysis(self.include, self.exclude)
                 self.results[url] = result
@@ -726,6 +735,5 @@ class BatchSEOAnalyzer:
             for url, result in self.results.items():
                 row = [url] + [json.dumps(result.get(k, '')) for k in all_keys] 
                 writer.writerow(row)
-
 
 
