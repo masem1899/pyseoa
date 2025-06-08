@@ -3,7 +3,7 @@ from tqdm import tqdm
 from typing import List
 from analyzer import BatchSEOAnalyzer
 from crawler import SiteCrawler
-from exports.exporter_factory import ExporterFactory
+
 
 
 class SmartBatchSEOAnalyzer(BatchSEOAnalyzer):

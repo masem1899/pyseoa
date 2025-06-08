@@ -11,7 +11,6 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
 from typing import Optional, Dict, List, Union
 from urllib.parse import urlparse
-from exports.html_exporter import HTMLExporter
 
 # Flags for inlcuding/excluding analytic features
 FLAG_NONE               :int = 0
