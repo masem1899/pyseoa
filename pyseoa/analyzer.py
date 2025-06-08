@@ -213,7 +213,7 @@ class SEOAnalyzer:
         """
         title = self.soup.title.string.strip() if self.soup and self.soup.title else "Missing"
         self.analysis['title'] = title
-        return self
+        return self 
     
     def analyze_meta_description(self) -> 'SEOAnalyzer':
         """
