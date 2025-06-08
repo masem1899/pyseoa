@@ -1,8 +1,8 @@
 from concurrent.futures import ThreadPoolExecutor
 from tqdm import tqdm
 from typing import List
-from analyzer import BatchSEOAnalyzer
-from crawler import SiteCrawler
+from pyseoa.analyzer import BatchSEOAnalyzer
+from pyseoa.crawler import SiteCrawler
 
 
 
