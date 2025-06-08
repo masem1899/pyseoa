@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: 📥 Checkout
-        uses: ./.github/actions/checkout # actions/checkout@3
+        uses: actions/checkout@v3 # actions/checkout@3
 
       - name: 🐍 Set up Python
         uses: ./.github/actions/setup-python # actions/setup-python@4
