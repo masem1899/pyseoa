@@ -31,7 +31,7 @@ __all__ = [
 
 __title__       = "pyseoa"
 __description__ = "A SEO analysis toolkit written in Python, with CLI, threading, exporters, and crawler support."
-__version__     = "0.2.2"
+__version__     = "0.2.3"
 __author__      = "masem"
 __email__       = "contact@masem.at"
 __url__         = "https://github.com/sempre76/pyseoa"
