@@ -29,6 +29,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest
-                ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:v0.2.3
+          tags: ${{ secrets.DOCKER_USERNAME }}/pyseoa:latest
+                ${{ secrets.DOCKER_USERNAME }}/pyseoa:v0.2.3
           
