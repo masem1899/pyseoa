@@ -1,85 +1,151 @@
 # pyseoa
+[![PyPI](https://img.shields.io/pypi/v/pyseoa)](https://pypi.org/project/pyseoa/)
 
-🔎 **pyseo** is a fast, extensible Python library for analyzing SEO health across one or more URLs, with CLI support too. It performs audits for metadata, accessibility, structered data, performance scores, and more.
+## 🚀 Python SEO Analyzer — CLI, Library & Web 📦
 
----
-
-## 🚀 Features
-
-- Analyze single or batch URLs
-- Title, meta description, headers, alt tags
-- Canonical links, Open Graph, Twitter tags
-- Robots.txt, sitemap.xml, favicon check
-- Accessibility (A11Y) hints
-- Structured Data (JSON-LD)
-- Lighthouse score via PageSpeedAPI (optional)
-- Mobile-friendly detection
-- Keyword density analysis (filter out of words possible)
-- Export results to JSON, CSV, or HTML
-- Export results to terminal
-- Parallel processing with progress bar
-- API and CLI ready
+`pyseoa` is a modern, thread‑ready Python toolkit for deep‑dive SEO audits.  
+Use it as a library, CLI tool, or integrate with FastAPI for web apps.
 
 ---
 
-## 📦 Installation
+## 🔍 Features (v0.2.3)
+
+- ✅ **Single & Batch Analysis**
+  - Run SEO checks on one or multiple URLs via crawl or direct URL  
+  - Smart internal link crawling and multithreading for performance  
+
+- ⚙️ **Feature Flags**
+  Easily enable or disable checks via bitflags:
+  - Title, Meta description, H1, Image alts  
+  - Canonical, OpenGraph, Twitter meta  
+  - Robots.txt, Sitemap, Favicon  
+  - Accessibility hints, Structured Data (JSON‑LD), Mobile-friendliness  
+  - Keyword density (with custom allow/deny lists)  
+  - Hreflang, Meta‑robots, Web Vitals, AMP compliance  
+
+- 📄 **Exporters**
+  - JSON, CSV, Markdown  
+  - Fancy HTML report with styles  
+  - PDF (via FPDF)  
+  - Terminal summary  
+
+- 🔄 **Threaded Workflow**
+  - Multi-threaded crawling, analysis, and exporting  
+  - Optional progress bars via `tqdm`
+
+- 🐍 **CLI Tool & API Support**
+  - Run via `pyseo‑analyze` CLI:  
+    ```bash
+    seo-analyze https://example.com --crawl --export html
+    ```  
+  - Fully importable — works great with FastAPI, Flask, Streamlit, Dash, etc.
+
+---
+
+## ⚡ Install
 
 ```bash
 pip install pyseoa
-```
-
-Or form source:
-```bash
-git clone https://github.com/sempre76/pyseoa.git
-cd pyseoa
-pip install -e
+# or, specify version:
+pip install pyseoa==0.2.3
 ```
 
 ---
 
-## 🧪 Usage
+## 🧾 Basic Library Example
 
-### Analyze a single URL
+```python
+from pyseoa import SmartBatchSEOAnalyzer
+
+urls = ["https://example.com", "https://another.com"]
+analyzer = SmartBatchSEOAnalyzer(urls, follow_links=True)
+analyzer.run_batch_analysis()
+
+# Save outputs
+analyzer.exporters.json.export(analyzer.results)
+analyzer.exporters.csv.export(analyzer.results)
+analyzer.exporters.html.export(analyzer.results, output="report.html")
 ```
+
+---
+
+## 🏃‍♂️ CLI Usage
+
+Analyze a single site:
+```bash
 seo-analyze https://example.com
 ```
 
-### Analyze multiple files from a file
-
+Batch or crawled analysis:
 ```bash
-seo-analyze -f urls.txt
+seo-analyze --crawl --export html urls.txt
 ```
 
-### Full CLI Options
+Run `seo-analyze --help` for full options list.
 
-```bash
-seo-analyze -h
+---
+
+## 🧩 Integration with Web Apps
+
+E.g. With FastAPI or Flask in your web project:
+
+```python
+from fastapi import FastAPI, Form
+from pyseoa import SmartBatchSEOAnalyzer
+
+app = FastAPI()
+
+@app.post("/analyze")
+def analyze(url: str = Form(...), crawl: bool = Form(False)):
+    analyzer = SmartBatchSEOAnalyzer([url], follow_links=crawl)
+    analyzer.run_batch_analysis()
+    return analyzer.results
 ```
 
 ---
 
-## 📤 Output
+## 🔧 Command-Line Installer
 
-- JSON report(s) in a folder (default: `seo_reports/`)
-- Combined CSV summary (default: `seo_summary.csv`)
-- Logs for any failed URLs in `seo_errors.log`
-
----
-
-## 🛡 License
-[MIT][LICENSE]
+Install via Git:
+```bash
+git clone https://github.com/sempre76/pyseoa.git
+cd pyseoa
+pip install -e .
+```
 
 ---
 
-## 📫 Author
+## 📦 What's New in v0.2.x
 
-Created by Mario Semper
-📧 mario.semper@masem.at
+- Dynamic internal link crawling  
+- Feature flags overhaul  
+- New exporters: Markdown, PDF, Terminal  
+- Multi-threaded pipelines with progress bars  
+- Web integration: SmartBatchAnalyzer & FastAPI-ready
+
+---
+
+## 👥 Contributing
+
+PRs welcome! Please check:
+
+- **Code**: `pip install .`, run basic analyzers  
+- **Tests**: run under example projects or use CLI  
+- **Docs**: update examples & feature flags in README
+
+---
+
+## 📜 License & Author
+
+- **MIT License** – see the [LICENSE](LICENSE) file  
+- **Maintained by masem** – contact: contact@masem.at
+
+---
 
 ## 🔗 Links
-- [PyPi](https://pypi.org/project/pyseoa/0.1.0/)
-- [GitHub Repository](https://github.com/sempre76/pyseoa)
 
-[![PyPI version](https://img.shields.io/pypi/v/pyseoa.svg)](https://pypi.org/project/pyseoa/)
-[![Python versions](https://img.shields.io/pypi/pyversions/pyseoa.svg)](https://pypi.org/project/pyseoa/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+- 🔗 **PyPI**: [https://pypi.org/project/pyseoa/](https://pypi.org/project/pyseoa/)  
+- 🧪 **GitHub**: [https://github.com/masm1899/pyseoa/](https://github.com/sempre76/pyseoa/)  
+- 🌐 **Web UI Demo**: [seo.masem.at](https://seo.masem.at) (Powered by FastAPI)
+- 📘 See also FastAPI companion project: [masem-seo-web](https://github.com/sempre76/masem-seo-web)
+
